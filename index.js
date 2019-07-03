@@ -13,37 +13,51 @@ import '@Styles/App.scss';
 import reducers from '@Reducer';
 import { ViewFiles } from '@Pages';
 
-import generatedummyFileSystem from '@Utils/dummyFileSystem';
+import freshRoot from '@Utils/freshRoot';
 
-const rootEl = document.getElementById('root');
+const IPFSNode = require('ipfs');
+const ipfs = new IPFSNode();
 
-const store = createStore(
-  reducers,
-  {
-    fileSystem:
-      localStorage.getItem('fileSystem') &&
-      Object.keys(localStorage.getItem('fileSystem')).length > 0
-        ? JSON.parse(localStorage.getItem('fileSystem'))
-        : generatedummyFileSystem()
-  },
-  composeWithDevTools()
-);
 
-const App = () => (
-  <Provider store={store}>
-    <Router>
-      <BrowserRouter>
-        <Fragment>
-          <Sidebar />
-          <ViewFiles />
-        </Fragment>
-      </BrowserRouter>
-    </Router>
-  </Provider>
-);
+ipfs.on('ready', async () => {
+  const version = await ipfs.version();
+  console.log('Version:', version.version);
 
-const renderComponent = Component => {
-  render(<Component />, rootEl);
-};
+  const rootEl = document.getElementById('root');
 
-renderComponent(App);
+  const fileSystemStore = await freshRoot(ipfs);
+
+  console.log('store');  
+  console.log(fileSystemStore);
+
+  const store = createStore(
+    reducers,
+    {
+      fileSystem:        
+        fileSystemStore
+    },
+    composeWithDevTools()
+  );
+  
+  const App = () => (
+    <Provider store={store}>
+      <Router>
+        <BrowserRouter>
+          <Fragment>
+            <Sidebar />
+            <ViewFiles />
+          </Fragment>
+        </BrowserRouter>
+      </Router>
+    </Provider>
+  );
+  
+  const renderComponent = Component => {
+    render(<Component />, rootEl);
+  };
+  
+  renderComponent(App);
+
+
+});
+

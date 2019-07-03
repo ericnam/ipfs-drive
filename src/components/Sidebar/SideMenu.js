@@ -4,8 +4,12 @@ import { withRouter } from 'react-router-dom';
 import { FILE } from '@Utils/constants';
 import { entriesAreSame } from '@Utils/fileSystem';
 import Collapse from './Collapse';
+import { IsDirPopulated } from '@Utils/ipfsHelper';
 
 import { LinkContainer, DropDownIcon, Line } from './styles';
+
+const IPFSNode = require('ipfs');
+const ipfs = new IPFSNode();
 
 class SideMenu extends Component {
   state = {
@@ -29,6 +33,7 @@ class SideMenu extends Component {
 
   handler = (children, value) => {
     let i = value + 1;
+    console.log('CHILDREN :' + JSON.stringify(children));
     return children && children.length > 0
       ? children.map((entry, _) => {
           if (entry.type == FILE) return;
@@ -40,10 +45,13 @@ class SideMenu extends Component {
           if (!flag) {
             return (
               <LinkContainer
-                key={entry.path}
-                onClick={() => this.props.history.push(entry.path)}
+                // key={entry.path}
+                key={entry.name}
+                // onClick={() => this.props.history.push(entry.path)}
+                onClick={() => this.props.history.push(entry.name)}
                 className={
-                  this.props.location.pathname === entry.path ? 'selected' : ''
+                  // this.props.location.pathname === entry.path ? 'selected' : ''
+                  this.props.location.pathname === entry.name ? 'selected' : ''
                 }
               >
                 <div className="link" style={{ marginLeft: `${10 * i}px` }}>
@@ -53,14 +61,17 @@ class SideMenu extends Component {
             );
           }
           return (
-            <Collapse index={i} key={entry.path}>
+            // <Collapse index={i} key={entry.path}>
+            <Collapse index={i} key={entry.name}>
               {(visible, handleVisible) => {
                 return (
                   <Fragment>
                     <LinkContainer
-                      key={entry.path}
+                      // key={entry.path}
+                      key={entry.name}
                       className={
-                        this.props.location.pathname === entry.path
+                        // this.props.location.pathname === entry.path
+                        this.props.location.pathname === entry.name
                           ? 'selected'
                           : ''
                       }
@@ -71,7 +82,8 @@ class SideMenu extends Component {
                           marginLeft: `${10 * i}px`,
                           width: '100%'
                         }}
-                        onClick={() => this.props.history.push(entry.path)}
+                        // onClick={() => this.props.history.push(entry.path)}
+                        onClick={() => this.props.history.push(entry.name)}
                       >
                         {entry.name}
                       </div>
@@ -91,7 +103,7 @@ class SideMenu extends Component {
       : '';
   };
 
-  render() {
+  render () {
     return <Fragment>{this.handler(this.state.fileStructure, 0)}</Fragment>;
   }
 }

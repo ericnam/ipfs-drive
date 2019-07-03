@@ -16,7 +16,7 @@ const Sidebar = ({ fileStructure }) => {
       <Link to="/" className="rootLink">
         <Root />
       </Link>
-      <SideMenu fileStructure={children} />
+      <SideMenu fileStructure={fileStructure} />
     </SideBarContainer>
   );
 };

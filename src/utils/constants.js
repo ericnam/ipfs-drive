@@ -1,5 +1,8 @@
-const FILE = '__file__';
-const FOLDER = '__folder__';
+// const FILE = '__file__';
+// const FOLDER = '__folder__';
+
+const FILE = 0;
+const FOLDER = 1;
 
 const ADD_ENTRY = '__add_entry__';
 const DELETE_ENTRY = '__delete_entry__';

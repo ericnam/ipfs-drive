@@ -11,8 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "formik": "^1.5.2",
+    "fs": "0.0.1-security",
+    "ipfs": "^0.36.4",
     "md5": "^2.2.1",
     "parcel-bundler": "^1.10.3",
+    "pull-stream": "^3.6.13",
     "react": ">=15",
     "react-dom": "^16.7.0-alpha.2",
     "react-helmet": "^5.2.0",
@@ -21,6 +24,9 @@
     "redux": "^4.0.1",
     "styled-components": "^4.1.1"
   },
+  "browserslist": [
+    "last 2 Chrome versions"
+  ],
   "devDependencies": {
     "@babel/core": "^7.1.6",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
