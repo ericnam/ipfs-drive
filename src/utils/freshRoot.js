@@ -53,19 +53,17 @@ async function GetFullDirectory (ipfs, dir) {
     if (files.length === 0) {
       return;
     }
-    // need to manipulate name to include full path
+
+    const path = dir === '/' ? dir : dir + '/';
     var mutableFiles = files.slice(0);
-    mutableFiles.forEach((ele) => {
-      ele.name = dir === '/' ? dir + ele.name : dir + '/' + ele.name
-    });
 
     await asyncForEach(mutableFiles, async (ele) => { 
       if (ele.type == FOLDER) {
         const subDirectory = await GetFullDirectory(
           ipfs, 
-          ele.name
+          path + ele.name
         );
-        Array.prototype.push.apply(mutableFiles, subDirectory)
+        ele.children = subDirectory;  
       }
     });
     return mutableFiles;

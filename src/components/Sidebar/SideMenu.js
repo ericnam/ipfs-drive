@@ -45,12 +45,9 @@ class SideMenu extends Component {
           if (!flag) {
             return (
               <LinkContainer
-                // key={entry.path}
                 key={entry.name}
-                // onClick={() => this.props.history.push(entry.path)}
                 onClick={() => this.props.history.push(entry.name)}
                 className={
-                  // this.props.location.pathname === entry.path ? 'selected' : ''
                   this.props.location.pathname === entry.name ? 'selected' : ''
                 }
               >
@@ -61,16 +58,13 @@ class SideMenu extends Component {
             );
           }
           return (
-            // <Collapse index={i} key={entry.path}>
             <Collapse index={i} key={entry.name}>
               {(visible, handleVisible) => {
                 return (
                   <Fragment>
                     <LinkContainer
-                      // key={entry.path}
                       key={entry.name}
                       className={
-                        // this.props.location.pathname === entry.path
                         this.props.location.pathname === entry.name
                           ? 'selected'
                           : ''
@@ -82,7 +76,6 @@ class SideMenu extends Component {
                           marginLeft: `${10 * i}px`,
                           width: '100%'
                         }}
-                        // onClick={() => this.props.history.push(entry.path)}
                         onClick={() => this.props.history.push(entry.name)}
                       >
                         {entry.name}
