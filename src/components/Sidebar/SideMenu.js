@@ -33,7 +33,6 @@ class SideMenu extends Component {
 
   handler = (children, value) => {
     let i = value + 1;
-    console.log('CHILDREN :' + JSON.stringify(children));
     return children && children.length > 0
       ? children.map((entry, _) => {
           if (entry.type == FILE) return;

@@ -57,7 +57,5 @@ ipfs.on('ready', async () => {
   };
   
   renderComponent(App);
-
-
 });
 
