@@ -42,18 +42,22 @@ function FileInfo(_props) {
       <Formik
         initialValues={{
           type: 'file',
-          name: '',
-          creatorName: '',
-          size: 0,
-          date: TodayDate()
+          name: ''
+          // ,
+          // creatorName: ''
+          // ,
+          // size: 0
+          // ,
+          // date: TodayDate()
         }}
         validate={values => {
           let errors = {};
           if (!values.name) {
             errors.name = 'Name is Required';
-          } else if (!values.creatorName) {
-            errors.creatorName = 'Creator Name is Required';
-          }
+          } 
+          // else if (!values.creatorName) {
+          //   errors.creatorName = 'Creator Name is Required';
+          // }
           return errors;
         }}
         onSubmit={(values, actions) => {
@@ -73,7 +77,7 @@ function FileInfo(_props) {
                 name="name"
                 className="field"
                 value={props.values.name}
-                autocomplete="off"
+                autoComplete="off"
               />
               {props.errors.name && props.touched.name ? (
                 <Error>{props.errors.name}</Error>
@@ -81,7 +85,7 @@ function FileInfo(_props) {
                 ''
               )}
             </div>
-
+{/* 
             <div className="formField">
               <Field
                 placeholder="Creator"
@@ -89,15 +93,15 @@ function FileInfo(_props) {
                 name="creatorName"
                 className="field"
                 value={props.values.creatorName}
-                autocomplete="off"
+                autoComplete="off"
               />
               {props.errors.creatorName && props.touched.creatorName ? (
                 <Error>{props.errors.creatorName}</Error>
               ) : (
                 ''
               )}
-            </div>
-
+            </div> */}
+{/* 
             <div className="formField">
               <Field
                 placeholder="Size"
@@ -108,8 +112,8 @@ function FileInfo(_props) {
                 min="0"
                 value={props.values.size}
               />
-            </div>
-
+            </div> */}
+{/* 
             <div className="formField">
               <Field
                 placeholder="date"
@@ -119,7 +123,7 @@ function FileInfo(_props) {
                 className="field"
                 value={props.values.date}
               />
-            </div>
+            </div> */}
 
             <Form.Submit
               type="submit"

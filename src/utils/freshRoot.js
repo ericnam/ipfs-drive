@@ -64,7 +64,8 @@ async function GetFullDirectory (ipfs, dir) {
           path + ele.name
         );
         ele.children = subDirectory;  
-      }
+      }      
+      ele.path = path;
     });
     return mutableFiles;
   } catch (err)

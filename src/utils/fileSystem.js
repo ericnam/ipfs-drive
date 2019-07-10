@@ -1,24 +1,37 @@
 import md5 from 'md5';
 import { FOLDER, FILE } from './constants';
+import { WriteFile, Mkdir, GetEntireDirectory, GetFiles } from './ipfsHelper';
 
 const search = (arr, entry) => {
   let no = 0;
 
-  arr[entry.parentID].children.forEach(elementId => {
-    if (
-      arr[elementId].name.includes(entry.name) &&
-      arr[elementId].type === entry.type
-    ) {
-      console.log(elementId);
+  arr.filter(x => x.path == entry.parentPath).forEach(ele => {
+    if (ele.name.includes(entry.name) && ele.type == entry.type) {
       no++;
     }
   });
+
+  // arr[entry.parentID].children.forEach(elementId => {
+  //   if (
+  //     arr[elementId].name.includes(entry.name) &&
+  //     arr[elementId].type === entry.type
+  //   ) {
+  //     console.log(elementId);
+  //     no++;
+  //   }
+  // });
   return no;
 };
 
-export const AddEntry = (data, newEntry) => {
+export const AddEntry = async (data, newEntry) => {
+  
+  const IPFSNode = require('ipfs');
+  const ipfs = new IPFSNode();
+
+  console.log('hi');
+  console.log(data);
+  console.log(newEntry);
   let no = search(data, newEntry);
-  console.log(no);
   console.log(no);
   if (no > 0) {
     if (newEntry.type === FILE) {
@@ -38,16 +51,49 @@ export const AddEntry = (data, newEntry) => {
       ? `${newEntry.parentPath}${newEntry.name}`
       : `${newEntry.parentPath}/${newEntry.name}`;
 
-  if (newEntry.type === FOLDER) {
-    newEntry.children = [];
+  // if (newEntry.type === FOLDER) {
+  //   newEntry.children = [];
+  // }
+
+  // const id = md5(newEntry.path + newEntry.type);
+  await ipfs.on('ready');
+
+  if (newEntry.type === FILE) {
+
   }
+  else
+  {
+    // how to init ipfs
+    await Mkdir(ipfs, newEntry.path).then(async () => {
+      const fullDir = await GetEntireDirectory(ipfs, '/');
+      console.log(fullDir);
+      localStorage.setItem('fileSystem', JSON.stringify(fullDir));   
+      return { ...fullDir }; 
+    });
+  }    
 
-  const id = md5(newEntry.path + newEntry.type);
-  data[id] = newEntry;
-  data[newEntry.parentID].children.push(id);
-  localStorage.setItem('fileSystem', JSON.stringify(data));
+  // ipfs.on('ready', async () => {
+  //   // add ipfs here 
+  //   if (newEntry.type === FILE) {
 
-  return { ...data };
+  //   }
+  //   else
+  //   {
+  //     // how to init ipfs
+  //     await Mkdir(ipfs, newEntry.path).then(async () => {
+  //       const fullDir = await GetEntireDirectory(ipfs, '/');
+  //       console.log(fullDir);
+  //       localStorage.setItem('fileSystem', JSON.stringify(fullDir));   
+  //       return { ...fullDir }; 
+  //     });
+  //   }    
+
+  // });
+
+
+  // data[id] = newEntry;
+  // data[newEntry.parentID].children.push(id);
+
 };
 
 export const DeleteEntry = (data, entryID) => {
@@ -92,7 +138,10 @@ export const generateTreeFromList = _list => {
   return root;
 };
 
+// only return files in the correct path
 export const showPathEntries = (parentPath, fileSystem) => {
+  return fileSystem.filter(x => x.path === parentPath);
+
   return fileSystem[md5(parentPath + FOLDER)]
     ? fileSystem[md5(parentPath + FOLDER)].children.map(
         childrenID => fileSystem[childrenID]

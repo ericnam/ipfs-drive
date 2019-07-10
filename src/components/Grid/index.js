@@ -16,6 +16,9 @@ import FolderIcon from '@Image/folder.png';
 
 class Grid extends Component {
   componentDidMount() {
+    console.log('test')
+    console.log(this.props.fileSystem)
+    console.log(this.props.entry)
     if (
       !Object.keys(this.props.fileSystem).includes(
         md5(this.props.location.pathname + FOLDER)

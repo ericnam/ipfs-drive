@@ -1,4 +1,11 @@
 const pull = require('pull-stream');
+import { FOLDER, FILE } from './constants';
+
+async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index ++) {
+    await callback(array[index], index, array);
+  }
+}
 
 export const GetEntireDirectory = async (ipfs, dir) => {
   try {
